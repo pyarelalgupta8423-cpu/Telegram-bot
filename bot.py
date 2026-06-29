@@ -60,7 +60,6 @@ def main():
         except AttributeError as e:
             if "_Updater__polling_cleanup_cb" in str(e):
                 logger.warning("Handling polling cleanup error...")
-                # Alternative way to run
                 application.run_polling()
             else:
                 raise
@@ -68,24 +67,6 @@ def main():
     except Exception as e:
         logger.error(f"❌ Error starting bot: {e}")
         raise
-
-if __name__ == "__main__":
-    main()        pattern="^back_to_menu$"
-    ))
-    
-    # Admin back handler
-    application.add_handler(CallbackQueryHandler(
-        AdminHandlers.admin_command,
-        pattern="^admin_back$"
-    ))
-    
-    # Start the bot
-    logger.info("🚀 Bot started successfully!")
-    logger.info(f"👥 Admin IDs: {ADMIN_IDS}")
-    logger.info("📊 Bot is running...")
-    
-    # Run the bot
-    application.run_polling(drop_pending_updates=True)
 
 if __name__ == "__main__":
     main()
