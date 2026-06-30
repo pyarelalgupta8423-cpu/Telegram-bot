@@ -4,7 +4,6 @@ from user_handlers import UserHandlers
 from admin_handlers import AdminHandlers
 
 def main():
-    """Main bot application"""
     # Build application
     application = Application.builder().token(BOT_TOKEN).build()
     
@@ -21,20 +20,24 @@ def main():
     application.add_handler(CommandHandler("set_withdraw", AdminHandlers.set_withdraw_settings))
     
     # Admin Callback Handlers
-    application.add_handler(CallbackQueryHandler(
-        AdminHandlers.handle_admin_callback,
-        pattern="^(admin_|approve_withdraw_|reject_withdraw_|add_task_)"
-    ))
+    application.add_handler(CallbackQueryHandler(AdminHandlers.handle_admin_callback, pattern="^(admin_|approve_withdraw_|reject_withdraw_|add_task_)"))
     
     # Back to menu handler
-    application.add_handler(CallbackQueryHandler(
-        UserHandlers.show_main_menu,
-        pattern="^back_to_menu$"
-    ))
+    application.add_handler(CallbackQueryHandler(UserHandlers.show_main_menu, pattern="^back_to_menu$"))
     
     # Admin back handler
-    application.add_handler(CallbackQueryHandler(
-        AdminHandlers.admin_command,
+    application.add_handler(CallbackQueryHandler(AdminHandlers.admin_command, pattern="^admin_back$"))
+    
+    # Start the bot
+    logger.info("🚀 Bot started successfully!")
+    logger.info(f"👥 Admin IDs: {ADMIN_IDS}")
+    logger.info("📊 Bot is running...")
+    
+    # Run the bot
+    application.run_polling(drop_pending_updates=True)
+
+if __name__ == "__main__":
+    main()        AdminHandlers.admin_command,
         pattern="^admin_back$"
     ))
     
