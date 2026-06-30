@@ -2,7 +2,6 @@ from telegram.ext import Application, CommandHandler, CallbackQueryHandler
 from config import BOT_TOKEN, ADMIN_IDS, logger
 from user_handlers import UserHandlers
 from admin_handlers import AdminHandlers
-import asyncio
 
 def main():
     """Main bot application"""
@@ -35,6 +34,20 @@ def main():
     
     # Admin back handler
     application.add_handler(CallbackQueryHandler(
+        AdminHandlers.admin_command,
+        pattern="^admin_back$"
+    ))
+    
+    # Start the bot
+    logger.info("🚀 Bot started successfully!")
+    logger.info(f"👥 Admin IDs: {ADMIN_IDS}")
+    logger.info("📊 Bot is running...")
+    
+    # Run the bot
+    application.run_polling(drop_pending_updates=True)
+
+if __name__ == "__main__":
+    main()    application.add_handler(CallbackQueryHandler(
         AdminHandlers.admin_command,
         pattern="^admin_back$"
     ))
