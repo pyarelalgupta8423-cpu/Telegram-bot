@@ -4,18 +4,15 @@ import logging
 
 load_dotenv()
 
-# Bot Configuration
 BOT_TOKEN = os.getenv('BOT_TOKEN')
 MONGO_URI = os.getenv('MONGO_URI')
 DATABASE_NAME = os.getenv('DATABASE_NAME', 'telegram_bot')
 
-# Admin IDs
 ADMIN_IDS = []
-admin_ids_str = os.getenv('ADMIN_IDS', '')
-if admin_ids_str:
-    ADMIN_IDS = [int(id.strip()) for id in admin_ids_str.split(',') if id.strip()]
+admin_ids = os.getenv('ADMIN_IDS', '')
+if admin_ids:
+    ADMIN_IDS = [int(x.strip()) for x in admin_ids.split(',') if x.strip()]
 
-# Default Points Configuration
 DEFAULT_POINTS = {
     'refer_level1': 10,
     'refer_level2': 5,
@@ -30,13 +27,9 @@ DEFAULT_POINTS = {
     }
 }
 
-# Force Join Channels (Store as list of channel usernames or IDs)
 FORCE_JOIN_CHANNELS = []
-
-# External Links for tasks
 EXTERNAL_LINKS = []
 
-# Logging Configuration
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     level=logging.INFO
