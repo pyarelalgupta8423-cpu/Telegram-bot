@@ -42,7 +42,7 @@ def init_db():
     get_collection("tasks").create_index("name")
     get_collection("withdraw_requests").create_index([("user_id", 1), ("status", 1)])
     get_collection("withdraw_requests").create_index("serial_no", unique=True)
-    get_collection("counters").create_index("_id", unique=True)
+    get_collection("counters").create_index("_id")
     
     logger.info("Database initialized with all indexes")
 
