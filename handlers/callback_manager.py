@@ -4,7 +4,7 @@ from handlers.user_handlers import *
 from handlers.task_handlers import *
 from handlers.admin_handlers import *
 from database import *
-from utils.helpers import create_main_menu_keyboard
+from ..utils.helpers import create_main_menu_keyboard
 
 async def callback_router(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Main callback router - handles ALL callbacks properly"""
