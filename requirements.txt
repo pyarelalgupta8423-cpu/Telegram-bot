@@ -1,5 +1,4 @@
-cat > requirements.txt << EOF
-python-telegram-bot==20.0
-pymongo==4.5.0
+python-telegram-bot==20.7
+pymongo==4.6.0
 python-dotenv==1.0.0
-EOF
+apscheduler==3.10.4
