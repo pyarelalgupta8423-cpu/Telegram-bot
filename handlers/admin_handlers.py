@@ -66,7 +66,7 @@ async def handle_admin_callbacks(update: Update, context: ContextTypes.DEFAULT_T
     elif data == "admin_broadcast_menu":
         await broadcast_menu(update, context)
     elif data == "admin_panel":
-        from utils.helpers import create_admin_keyboard
+        from ..utils.helpers import create_admin_keyboard
         await query.message.edit_text(
             "🔐 *Admin Panel*",
             reply_markup=create_admin_keyboard(),
@@ -251,7 +251,7 @@ async def toggle_task(update: Update, context: ContextTypes.DEFAULT_TYPE, task_i
 
 async def show_points_config(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
-    from utils.helpers import format_points_message
+    from ..utils.helpers import format_points_message
     
     keyboard = [
         [InlineKeyboardButton("✏️ Edit Points", callback_data="admin_edit_points")],
