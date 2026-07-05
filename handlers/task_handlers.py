@@ -280,7 +280,7 @@ async def complete_verification(update: Update, context: ContextTypes.DEFAULT_TY
     if pending_referrer:
         await handle_referral_points(user_id, pending_referrer, context)
     
-    from utils.helpers import create_main_menu_keyboard
+    from ..utils.helpers import create_main_menu_keyboard
     
     await query.message.edit_text(
         "🎉 *Verification Complete!*\n\n"
