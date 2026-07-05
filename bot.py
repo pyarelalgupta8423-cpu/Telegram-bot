@@ -40,12 +40,12 @@ MAIN_KEYBOARD = ReplyKeyboardMarkup(
         [KeyboardButton("📊 Status"), KeyboardButton("📋 Tasks")],
         [KeyboardButton("💰 Balance"), KeyboardButton("📈 My Stats")]
     ],
-    resize_keyboard=True, persistent=True
+    resize_keyboard=True
 )
 
 VERIFY_KEYBOARD = ReplyKeyboardMarkup(
     [[KeyboardButton("🔄 Start Verification")]],
-    resize_keyboard=True, persistent=True
+    resize_keyboard=True
 )
 
 # ============ HELPERS ============
