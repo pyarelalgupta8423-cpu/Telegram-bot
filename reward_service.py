@@ -302,9 +302,7 @@ def credit_referral_atomic(user_id, referrer_id):
         return None
 
 
-def create_withdrawal_atomic(user_id, withdraw_amount, username="", full_name=""):
-    """
-     def create_withdrawal_atomic(
+def create_withdrawal_atomic(
     user_id,
     withdraw_amount,
     username="",
