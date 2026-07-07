@@ -727,7 +727,7 @@ async def handle_admin_callbacks(update, context):
         await safe_edit(q, f"📊 ᴜ:{u} | ɢ:{g} | ᴡ:{get_collection('withdraw_requests').count_documents({})}", reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("🔙", callback_data="admin_panel")]]))
     elif d == "admin_cms_screens":
         screens=list(get_collection("ui_screens").find({}))
-        kb=[[InlineKeyboardButton(f"📝 {s['screen_id']}", callback_data=f"admin_edit_screen_{s['screen_id']}")] for s in screens[:20]]
+        kb=[[InlineKeyboardButton(f"📝 {s['screen_id']}", callback_data=f"admin_edit_screen_{s['screen_id']}")] for s in screens]
         kb.append([InlineKeyboardButton("🔙", callback_data="admin_panel")])
         await safe_edit(q, f"🎨 *ᴄᴍs* ({len(screens)} screens)", ParseMode.MARKDOWN, InlineKeyboardMarkup(kb))
     elif d.startswith("admin_edit_screen_"):
