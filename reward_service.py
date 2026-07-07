@@ -304,44 +304,55 @@ def credit_referral_atomic(user_id, referrer_id):
 
 def create_withdrawal_atomic(user_id, withdraw_amount, username="", full_name=""):
     """
-    Atomic withdrawal using transaction callback API.
-    Guards:
-    - Deducts points and creates request in same transaction
-    - Generates serial number atomically
-    - Uses with_transaction() for retry handling
-    - Stores user metadata in same transaction
-    """
+     def create_withdrawal_atomic(
+    user_id,
+    withdraw_amount,
+    username="",
+    full_name="",
+    service_id="",
+    service_name="",
+    service_emoji="💳",
+    required_referrals=0,
+    user_input="N/A"
+):
     users = get_collection("users")
     counters = get_collection("counters")
     withdraw_requests = get_collection("withdraw_requests")
-    
+
     def txn_callback(session):
-        # Step 1: Atomic balance deduction
         user = users.find_one_and_update(
             {
                 "user_id": user_id,
                 "points": {"$gte": withdraw_amount}
             },
-            {"$inc": {"points": -withdraw_amount}},
+            {
+                "$inc": {
+                    "points": -withdraw_amount
+                }
+            },
             session=session,
             return_document=ReturnDocument.BEFORE
         )
-        
+
         if not user:
             return None
-        
-        # Step 2: Generate serial number atomically
+
         counter = counters.find_one_and_update(
-            {"_id": "withdraw_serial"},
-            {"$inc": {"sequence": 1}},
+            {
+                "_id": "withdraw_serial"
+            },
+            {
+                "$inc": {
+                    "sequence": 1
+                }
+            },
             upsert=True,
             session=session,
             return_document=ReturnDocument.AFTER
         )
-        
+
         serial_no = counter["sequence"]
-        
-        # Step 3: Create withdrawal request with complete metadata
+
         withdraw_requests.insert_one(
             {
                 "serial_no": serial_no,
@@ -349,23 +360,35 @@ def create_withdrawal_atomic(user_id, withdraw_amount, username="", full_name=""
                 "username": username,
                 "full_name": full_name,
                 "points": withdraw_amount,
+
+                "service_id": service_id,
+                "service_name": service_name,
+                "service_emoji": service_emoji,
+                "required_referrals": required_referrals,
+                "user_input": user_input,
+
                 "status": "pending",
                 "request_date": datetime.now(),
-                "processed_date": None
+                "processed_date": None,
+                "processed_by": None,
+                "refund_completed": False
             },
             session=session
         )
-        
+
         return {
             "serial_no": serial_no,
             "previous_balance": user["points"],
             "withdraw_amount": withdraw_amount,
             "new_balance": user["points"] - withdraw_amount
         }
-    
+
     try:
         with client.start_session() as session:
             return session.with_transaction(txn_callback)
+
     except Exception as e:
-        logger.error(f"Withdrawal transaction failed for user {user_id}: {e}")
+        logger.error(
+            f"Withdrawal transaction failed for user {user_id}: {e}"
+        )
         return None
