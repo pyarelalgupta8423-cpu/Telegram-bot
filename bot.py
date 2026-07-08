@@ -1024,7 +1024,12 @@ async def error_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 def main():
     init_db(); seed_cms_data()
     Thread(target=run_web_server, daemon=True).start()
-    app=Application.builder().token(BOT_TOKEN).build()
+    app = (
+    Application.builder()
+    .token(BOT_TOKEN)
+    .concurrent_updates(16)
+    .build()
+)
     for cmd,func in [("start",start),("admin",admin_command),("broadcast",broadcast_command),("broadcastgroups",broadcast_groups_command),("addchannel",add_channel_command),("addlink",add_link_command),("addtask",add_task_command),("setpoints",set_points_command),("cancel",cancel_command)]:
         app.add_handler(CommandHandler(cmd,func))
     app.add_handler(MessageHandler(filters.TEXT & filters.User(user_id=ADMIN_IDS) & ~filters.COMMAND, handle_admin_messages))
